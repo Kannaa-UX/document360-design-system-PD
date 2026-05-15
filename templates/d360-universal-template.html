@@ -403,14 +403,14 @@
    RESET
 ═══════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; overflow: hidden; }
+html, body { height: 100%; overflow: hidden; margin: 0; padding: 0; }
 body { font-family: var(--font); font-size: 13px; color: var(--text-base); background: var(--surface-neutral-100); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; }
 
 /* ═══════════════════════════════════════════════
    LAYOUT SHELL
 ═══════════════════════════════════════════════ */
-.shell { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.shell { display: flex; flex-direction: column; height: 100vh; min-height: 100vh; overflow: hidden; margin: 0; padding: 0; }
 .shell__body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
 
 /* ═══════════════════════════════════════════════
@@ -1306,6 +1306,119 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .tpl-btn i { font-size: 12px; color: #71717a; width: 14px; flex-shrink: 0; }
 .tpl-divider { height: 1px; background: #3e3e46; margin: 4px 0; }
 
+
+/* ═══ TEMPLATE SWITCH POPUP ═══ */
+.tpl-popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 99998;
+  display: none; align-items: center; justify-content: center;
+}
+.tpl-popup-overlay.open { display: flex; }
+.tpl-popup {
+  background: var(--surface-content, #fff);
+  border: 1px solid var(--border-light, #d1d1d6);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 24px;
+  width: 340px;
+  font-family: var(--font, 'Inter', sans-serif);
+  animation: popIn 0.18s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+[data-theme="dark"] .tpl-popup {
+  background: #1c1c21;
+  border-color: #3e3e46;
+}
+.tpl-popup__icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: #ede9fe;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #7f56d9; margin-bottom: 16px;
+}
+.tpl-popup__title {
+  font-size: 15px; font-weight: 700;
+  color: var(--text-base, #18181b);
+  margin-bottom: 6px;
+}
+.tpl-popup__subtitle {
+  font-size: 13px; color: var(--text-secondary, #70707a);
+  line-height: 20px; margin-bottom: 20px;
+}
+.tpl-popup__options {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 16px;
+}
+.tpl-popup__option {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px; border-radius: 8px;
+  border: 1.5px solid var(--border-light, #d1d1d6);
+  cursor: pointer; transition: all 0.15s;
+  background: none; text-align: left;
+  font-family: var(--font, 'Inter', sans-serif);
+  width: 100%;
+}
+.tpl-popup__option:hover {
+  border-color: #7f56d9;
+  background: #faf7ff;
+}
+.tpl-popup__option.selected {
+  border-color: #7f56d9;
+  background: #f5f0ff;
+}
+[data-theme="dark"] .tpl-popup__option:hover,
+[data-theme="dark"] .tpl-popup__option.selected {
+  background: #2d2545;
+  border-color: #7f56d9;
+}
+.tpl-popup__option-icon {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.tpl-popup__option-icon--keep  { background: #e5ddf7; color: #7f56d9; }
+.tpl-popup__option-icon--fresh { background: #f4f4f5; color: #3e3e46; }
+[data-theme="dark"] .tpl-popup__option-icon--fresh { background: #3f3f46; color: #a1a1aa; }
+.tpl-popup__option-text {}
+.tpl-popup__option-label {
+  font-size: 13px; font-weight: 600;
+  color: var(--text-base, #18181b);
+  display: block; margin-bottom: 2px;
+}
+.tpl-popup__option-desc {
+  font-size: 12px; color: var(--text-secondary, #70707a);
+  line-height: 18px;
+}
+.tpl-popup__actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+.tpl-popup__cancel {
+  height: 34px; padding: 0 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  color: var(--text-secondary, #70707a);
+  border: 1px solid var(--border-light, #d1d1d6);
+  background: none; cursor: pointer;
+  font-family: var(--font, 'Inter', sans-serif);
+  transition: background 0.12s;
+}
+.tpl-popup__cancel:hover { background: var(--nav-hover, #f4f4f5); }
+.tpl-popup__confirm {
+  height: 34px; padding: 0 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  color: #fff; background: #7f56d9;
+  border: none; cursor: pointer;
+  font-family: var(--font, 'Inter', sans-serif);
+  transition: background 0.12s;
+  opacity: 0.5; pointer-events: none;
+}
+.tpl-popup__confirm.enabled {
+  opacity: 1; pointer-events: all;
+}
+.tpl-popup__confirm:hover { background: #6d48c3; }
+
 </style>
 </head>
 <body data-default-template="settings">
@@ -1319,14 +1432,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <!-- Logo — always shown -->
       <div class="tb-logo">
         <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25.8488 3.83173C22.3767 1.79464 18.4508 2.00626 18.4508 2.00626H6.81669L3.21569 19.2331L9.58665 23.54L12.9109 8.46625H17.6197C18.4928 8.43725 19.235 8.52888 19.8646 8.71545C20.5063 6.02044 22.9201 3.98533 25.8488 3.83173Z" fill="url(#d360g0)"/>
-          <path d="M26.2064 16.4728C25.0754 16.4728 24.0117 16.1927 23.085 15.6995C22.9262 17.1077 22.6053 18.1566 22.6053 18.1566C20.3897 23.809 15.6808 23.54 15.6808 23.54H10.1409L1 30H14.8498C23.9907 29.731 27.5917 24.078 27.5917 24.078C30.2022 20.6953 30.9138 17.0925 31 14.4265C29.8101 15.6844 28.1032 16.4728 26.2064 16.4728Z" fill="url(#d360g1)"/>
-          <path d="M26.2064 14.2538C28.5777 14.2538 30.5 12.3858 30.5 10.0814C30.5 7.77707 28.5777 5.90902 26.2064 5.90902C23.835 5.90902 21.9127 7.77707 21.9127 10.0814C21.9127 12.3858 23.835 14.2538 26.2064 14.2538Z" fill="url(#d360g2)"/>
-          <defs>
-            <linearGradient id="d360g0" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#8006D6"/><stop offset="1" stop-color="#6605AB"/></linearGradient>
-            <linearGradient id="d360g1" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#8006D6"/><stop offset="1" stop-color="#6605AB"/></linearGradient>
-            <linearGradient id="d360g2" x1="16" y1="2" x2="16" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#8006D6"/><stop offset="1" stop-color="#6605AB"/></linearGradient>
-          </defs>
+          <path d="M25.8488 3.83173C22.3767 1.79464 18.4508 2.00626 18.4508 2.00626H6.81669L3.21569 19.2331L9.58665 23.54L12.9109 8.46625H17.6197C18.4928 8.43725 19.235 8.52888 19.8646 8.71545C20.5063 6.02044 22.9201 3.98533 25.8488 3.83173Z" fill="#8006D6"/>
+          <path d="M26.2064 16.4728C25.0754 16.4728 24.0117 16.1927 23.085 15.6995C22.9262 17.1077 22.6053 18.1566 22.6053 18.1566C20.3897 23.809 15.6808 23.54 15.6808 23.54H10.1409L1 30H14.8498C23.9907 29.731 27.5917 24.078 27.5917 24.078C30.2022 20.6953 30.9138 17.0925 31 14.4265C29.8101 15.6844 28.1032 16.4728 26.2064 16.4728Z" fill="#7200BF"/>
+          <path d="M26.2064 14.2538C28.5777 14.2538 30.5 12.3858 30.5 10.0814C30.5 7.77707 28.5777 5.90902 26.2064 5.90902C23.835 5.90902 21.9127 7.77707 21.9127 10.0814C21.9127 12.3858 23.835 14.2538 26.2064 14.2538Z" fill="#8006D6"/>
         </svg>
       </div>
 
@@ -2091,101 +2199,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
     </div>
 
-    <!-- SUB-NAV -->
-    <aside class="subnav" id="subnav">
-
-      <div class="sn-search">
-        <i class="fa-regular fa-magnifying-glass"></i>
-        <span>Search</span>
-      </div>
-
-      <!-- KB PORTAL -->
-      <div class="nav-group" id="grp-portal">
-        <div class="nav-hdr nav-hdr--open" onclick="toggleGrp('grp-portal')">
-          <span class="nav-hdr__label">Knowledge Base Portal</span>
-          <div class="nav-hdr__caret"><i class="fa-solid fa-caret-up"></i></div>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-sliders"></i></div>General</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-language"></i></div>Workspace &amp; localization</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-diagram-project"></i></div>Workflow designer</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-bell"></i></div>Notifications</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-box-archive"></i></div>Backup &amp; restore</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-arrows-rotate"></i></div>Migrate content</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-code"></i></div>API tokens</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-list-ul"></i></div>Team auditing</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-circle-dollar-to-slot"></i></div>Billing</div>
-        </div>
-      </div>
-
-      <!-- KB SITE -->
-      <div class="nav-group collapsed" id="grp-site">
-        <div class="nav-hdr nav-hdr--closed" onclick="toggleGrp('grp-site')">
-          <span class="nav-hdr__label">Knowledge Base Site</span>
-          <div class="nav-hdr__caret"><i class="fa-solid fa-caret-down"></i></div>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-sliders"></i></div>General</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-desktop"></i></div>Site customization</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-globe"></i></div>Custom domain</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-book-open"></i></div>Article settings &amp; SEO</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-right-from-bracket"></i></div>Article redirect rules</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-circle-info"></i></div>Smart bars</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-circle-check"></i></div>Read receipt</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-wifi"></i></div>Ticket deflector</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-ban"></i></div>IP restriction</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-cookie"></i></div>Cookie consent</div>
-        </div>
-      </div>
-
-      <!-- USERS & PERMISSIONS -->
-      <div class="nav-group collapsed" id="grp-users">
-        <div class="nav-hdr nav-hdr--closed" onclick="toggleGrp('grp-users')">
-          <span class="nav-hdr__label">Users &amp; Permissions</span>
-          <div class="nav-hdr__caret"><i class="fa-solid fa-caret-down"></i></div>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-users"></i></div>Users &amp; groups</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-user-gear"></i></div>Roles &amp; permissions</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-lock"></i></div>Content access</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-book-open-reader"></i></div>Readers &amp; groups</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-earth-europe"></i></div>Reader access</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-key"></i></div>SSO configuration</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-star-of-life"></i></div>JWT</div>
-        </div>
-      </div>
-
-      <!-- AI SETTINGS -->
-      <div class="nav-group collapsed" id="grp-ai">
-        <div class="nav-hdr nav-hdr--closed" onclick="toggleGrp('grp-ai')">
-          <span class="nav-hdr__label">AI Settings</span>
-          <div class="nav-hdr__caret"><i class="fa-solid fa-caret-down"></i></div>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item active" onclick="setNav(this)">
-            <div class="nav-item__icon nav-item__icon--pink"><i class="fa-solid fa-sparkles"></i></div>Eddy AI settings
-          </div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-sliders"></i></div>Customize Eddy AI</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-pen-ruler"></i></div>Style guide</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-server"></i></div>Manage sources</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-circle-question"></i></div>Suggested questions</div>
-        </div>
-      </div>
-
-      <!-- INTEGRATIONS -->
-      <div class="nav-group collapsed" id="grp-int">
-        <div class="nav-hdr nav-hdr--closed" onclick="toggleGrp('grp-int')">
-          <span class="nav-hdr__label">Integrations &amp; Extensions</span>
-          <div class="nav-hdr__caret"><i class="fa-solid fa-caret-down"></i></div>
-        </div>
-        <div class="nav-children">
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-plug"></i></div>All integrations</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-puzzle-piece"></i></div>Extensions</div>
-          <div class="nav-item" onclick="setNav(this)"><div class="nav-item__icon"><i class="fa-light fa-webhook"></i></div>Webhooks</div>
-        </div>
-      </div>
-
-    </aside>
 
     <!-- CONTENT AREA — drop your screen designs here -->
     <main class="content" id="content">
@@ -2657,6 +2670,44 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </script>
 
 
+
+<!-- TEMPLATE SWITCH POPUP -->
+<div class="tpl-popup-overlay" id="tpl-popup-overlay">
+  <div class="tpl-popup">
+    <div class="tpl-popup__icon">
+      <i class="fa-solid fa-sliders"></i>
+    </div>
+    <div class="tpl-popup__title" id="popup-title">Switch to Home template?</div>
+    <div class="tpl-popup__subtitle">Choose what happens to your current content area design.</div>
+    <div class="tpl-popup__options">
+      <button class="tpl-popup__option" id="popup-keep" onclick="selectPopupOption('keep')">
+        <div class="tpl-popup__option-icon tpl-popup__option-icon--keep">
+          <i class="fa-solid fa-arrow-right"></i>
+        </div>
+        <div class="tpl-popup__option-text">
+          <span class="tpl-popup__option-label">Keep content</span>
+          <span class="tpl-popup__option-desc">Move your current design into the new template. Layout will adapt responsively.</span>
+        </div>
+      </button>
+      <button class="tpl-popup__option" id="popup-fresh" onclick="selectPopupOption('fresh')">
+        <div class="tpl-popup__option-icon tpl-popup__option-icon--fresh">
+          <i class="fa-regular fa-file"></i>
+        </div>
+        <div class="tpl-popup__option-text">
+          <span class="tpl-popup__option-label">Start fresh</span>
+          <span class="tpl-popup__option-desc">Clear the content area and start a new design in the new template.</span>
+        </div>
+      </button>
+    </div>
+    <div class="tpl-popup__actions">
+      <button class="tpl-popup__cancel" onclick="closePopup()">Cancel</button>
+      <button class="tpl-popup__confirm" id="popup-confirm" onclick="confirmSwitch()">Switch template</button>
+    </div>
+  </div>
+</div>
+
+
+
 <script>
 
 /* Variant — called from profile dropdown */
@@ -2686,27 +2737,42 @@ document.addEventListener('click', e => {
 });
 
 /* Icon sidebar */
+/* ═══ ICON → TEMPLATE MAPPING ═══ */
+const ICON_TEMPLATE_MAP = {
+  'Home':          'home',
+  'Documentation': 'documentation',
+  'Eddy AI':       'aichatbot',
+  'Settings':      'settings',
+};
+
 function setIcon(el, showSubnav) {
-  // Restore all icons to fa-regular
+  const tip = el.getAttribute('data-tip');
+  const targetTpl = ICON_TEMPLATE_MAP[tip];
+
+  // If icon has matching template AND it's different from current → show popup
+  if (targetTpl && targetTpl !== currentTemplate) {
+    showSwitchPopup(targetTpl, el);
+    return;
+  }
+
+  // No matching template or same template → just set active state
+  applyActiveIcon(el);
+}
+
+function applyActiveIcon(el) {
   document.querySelectorAll('.s-icon').forEach(i => {
     i.classList.remove('active');
-    const icon = i.querySelector('.s-icon__btn > i, .s-icon__btn .s-stack-icon__main, .s-icon__btn .s-ai-icon__main');
-    if (icon) icon.className = icon.className.replace('fa-solid', 'fa-regular');
+    if (!i.classList.contains('s-icon--ai')) {
+      const icon = i.querySelector('.s-icon__btn > i, .s-stack-icon__main');
+      if (icon) icon.className = icon.className.replace('fa-solid', 'fa-regular');
+    }
   });
-  // Set active + swap to fa-solid
   el.classList.add('active');
-  // Skip icon swap for Eddy AI — it keeps its own stacked style
   if (!el.classList.contains('s-icon--ai')) {
     const activeIcon = el.querySelector('.s-icon__btn > i, .s-stack-icon__main');
     if (activeIcon) activeIcon.className = activeIcon.className.replace('fa-regular', 'fa-solid');
   }
 }
-
-// Set initial active icon to solid on load
-window.addEventListener('DOMContentLoaded', () => {
-  const activeEl = document.querySelector('.s-icon.active .s-icon__btn > i, .s-icon.active .s-stack-icon__main, .s-icon.active .s-ai-icon__main');
-  if (activeEl) activeEl.className = activeEl.className.replace('fa-regular', 'fa-solid');
-});
 
 /* Accordion */
 function toggleGrp(id) {
@@ -2898,6 +2964,178 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+
+/* ═══ POPUP CONTROLLER ═══ */
+let pendingTemplate  = null;   // template to switch to
+let pendingIconEl    = null;   // icon element that triggered switch
+let selectedOption   = null;   // 'keep' or 'fresh'
+
+function showSwitchPopup(targetTpl, iconEl) {
+  pendingTemplate = targetTpl;
+  pendingIconEl   = iconEl;
+  selectedOption  = null;
+
+  // Update popup title
+  const names = { settings: 'Settings', home: 'Home', documentation: 'Documentation', aichatbot: 'AI Chatbot' };
+  document.getElementById('popup-title').textContent = `Switch to ${names[targetTpl]} template?`;
+
+  // Reset selections
+  document.getElementById('popup-keep').classList.remove('selected');
+  document.getElementById('popup-fresh').classList.remove('selected');
+  document.getElementById('popup-confirm').classList.remove('enabled');
+
+  // Show overlay
+  document.getElementById('tpl-popup-overlay').classList.add('open');
+}
+
+function selectPopupOption(option) {
+  selectedOption = option;
+  document.getElementById('popup-keep').classList.toggle('selected',  option === 'keep');
+  document.getElementById('popup-fresh').classList.toggle('selected', option === 'fresh');
+  document.getElementById('popup-confirm').classList.add('enabled');
+}
+
+function confirmSwitch() {
+  if (!selectedOption || !pendingTemplate) return;
+
+  // 1. Save or clear content
+  const contentEl = document.getElementById('content');
+  const savedContent = (selectedOption === 'keep' && contentEl) ? contentEl.innerHTML : null;
+
+  // 2. Swap shell
+  const shellStore = document.getElementById('tpl-' + pendingTemplate);
+  if (!shellStore) return;
+  document.getElementById('shell-body').innerHTML = shellStore.innerHTML;
+  currentTemplate = pendingTemplate;
+
+  // 3. Restore or clear content
+  const newContent = document.getElementById('content');
+  if (newContent && savedContent) newContent.innerHTML = savedContent;
+
+  // 4. Update switcher panel buttons
+  document.querySelectorAll('.tpl-btn').forEach(b => b.classList.remove('active'));
+  const activeBtn = document.querySelector(`.tpl-btn[data-tpl="${pendingTemplate}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  // 5. Find and activate correct icon in new shell
+  // Map template name → data-tip of its active icon
+  const TPL_ICON_TIP = {
+    settings:      'Settings',
+    home:          'Home',
+    documentation: 'Documentation',
+    aichatbot:     'Eddy AI',
+  };
+  const targetTip = TPL_ICON_TIP[pendingTemplate];
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      // Reset all icons to regular
+      document.querySelectorAll('.s-icon:not(.s-icon--ai) .s-icon__btn > i').forEach(i => {
+        i.className = i.className.replace('fa-solid', 'fa-regular');
+      });
+      document.querySelectorAll('.s-stack-icon__main').forEach(i => {
+        i.className = i.className.replace('fa-solid', 'fa-regular');
+      });
+      document.querySelectorAll('.s-icon').forEach(i => i.classList.remove('active'));
+
+      // Find and activate the right icon
+      const targetIcon = document.querySelector(`.s-icon[data-tip="${targetTip}"]`);
+      if (targetIcon) applyActiveIcon(targetIcon);
+    });
+  });
+
+  closePopup();
+}
+
+function closePopup() {
+  document.getElementById('tpl-popup-overlay').classList.remove('open');
+  pendingTemplate = null;
+  pendingIconEl   = null;
+  selectedOption  = null;
+}
+
+// Close on overlay click — wrapped in DOMContentLoaded to ensure element exists
+document.addEventListener('DOMContentLoaded', function() {
+  const overlay = document.getElementById('tpl-popup-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) closePopup();
+    });
+  }
+});
+
+// Template switcher panel also uses popup
+// Override switchTemplate to show popup (force=true bypasses popup for init)
+function switchTemplate(name, force) {
+  if (force) { origSwitchTemplate(name); return; }
+  if (name === currentTemplate) return;
+  showSwitchPopup(name, null);
+}
+function origSwitchTemplate(name) {
+  const contentEl = document.getElementById('content');
+  const savedContent = contentEl ? contentEl.innerHTML : '';
+  const shellStore = document.getElementById('tpl-' + name);
+  if (!shellStore) return;
+  document.getElementById('shell-body').innerHTML = shellStore.innerHTML;
+  currentTemplate = name;
+  const newContent = document.getElementById('content');
+  if (newContent && savedContent) newContent.innerHTML = savedContent;
+  document.querySelectorAll('.tpl-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.tpl-btn[data-tpl="${name}"]`);
+  if (btn) btn.classList.add('active');
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    document.querySelectorAll('.s-icon:not(.s-icon--ai) .s-icon__btn > i').forEach(i => { i.className = i.className.replace('fa-solid','fa-regular'); });
+    const activeIcon = document.querySelector('.s-icon.active:not(.s-icon--ai) .s-icon__btn > i, .s-icon.active:not(.s-icon--ai) .s-stack-icon__main');
+    if (activeIcon) activeIcon.className = activeIcon.className.replace('fa-regular','fa-solid');
+  }); });
+}
+
+
+
+/* ═══ CATEGORY TREE FUNCTIONS (Documentation template) ═══ */
+function catClick(row) {
+  document.querySelectorAll('.cat-row--active').forEach(r => r.classList.remove('cat-row--active'));
+  row.classList.add('cat-row--active');
+}
+
+function catToggle(event, btn) {
+  event.stopPropagation();
+  const row = btn.closest('.cat-row');
+  const icon = btn.querySelector('i');
+  const isExpanded = icon.classList.contains('fa-angle-down');
+  icon.className = isExpanded ? 'fa-solid fa-angle-right' : 'fa-solid fa-angle-down';
+  let next = row.nextElementSibling;
+  const lvlNum = parseInt(([...row.classList].find(c => c.startsWith('cat-row--l')) || 'cat-row--l0').replace('cat-row--l',''));
+  while (next && next.classList.contains('cat-row')) {
+    const nextLvl = parseInt(([...next.classList].find(c => c.startsWith('cat-row--l')) || 'cat-row--l0').replace('cat-row--l',''));
+    if (nextLvl <= lvlNum) break;
+    next.style.display = isExpanded ? 'none' : '';
+    next = next.nextElementSibling;
+  }
+}
+
+/* Explicitly expose all functions to window scope for inline onclick handlers */
+window.setIcon        = setIcon;
+window.applyActiveIcon = applyActiveIcon;
+window.showMenu       = showMenu;
+window.hideMenu       = hideMenu;
+window.keepMenu       = keepMenu;
+window.hideMenuEl     = hideMenuEl;
+window.toggleGrp      = toggleGrp;
+window.setNav         = setNav;
+window.setMenuActive  = setMenuActive;
+window.toggleDD       = toggleDD;
+window.toggleTheme    = toggleTheme;
+window.setVariantDD   = setVariantDD;
+window.switchTemplate = switchTemplate;
+window.toggleSwitcher = toggleSwitcher;
+window.showSwitchPopup = showSwitchPopup;
+window.selectPopupOption = selectPopupOption;
+window.confirmSwitch  = confirmSwitch;
+window.closePopup     = closePopup;
+window.catClick       = catClick;
+window.catToggle      = catToggle;
 
 </script>
 
