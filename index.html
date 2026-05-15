@@ -1,8 +1,92 @@
 <!DOCTYPE html>
-<html>
-<head><title>D360 Design System</title></head>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>D360 Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#f4f4f5;color:#18181b;min-height:100vh;padding:40px 24px}
+  .header{max-width:800px;margin:0 auto 40px}
+  .logo{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .logo svg{width:36px;height:36px}
+  .logo-text{font-size:20px;font-weight:700}
+  .logo-sub{font-size:13px;color:#70707a;margin-top:2px}
+  h1{font-size:28px;font-weight:700;margin-bottom:8px}
+  p{color:#70707a;font-size:14px;line-height:22px}
+  .grid{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{background:#fff;border:1px solid #e4e4e7;border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:all 0.15s;display:block}
+  .card:hover{border-color:#7f56d9;box-shadow:0 4px 16px rgba(127,86,217,0.12);transform:translateY(-2px)}
+  .card__icon{width:40px;height:40px;border-radius:10px;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+  .card__title{font-size:14px;font-weight:600;margin-bottom:4px}
+  .card__desc{font-size:12px;color:#70707a;line-height:18px}
+  .section-title{max-width:800px;margin:32px auto 16px;font-size:12px;font-weight:700;color:#70707a;text-transform:uppercase;letter-spacing:0.08em}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:#f0fdf4;border:1px solid #4ade80;color:#166534;font-size:11px;font-weight:600;padding:3px 10px;border-radius:8px;margin-bottom:24px}
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:#22c55e}
+</style>
+</head>
 <body>
-<h1>D360 Design System</h1>
-<p><a href="templates/d360-universal-template.html">Universal Template</a></p>
+
+<div class="header">
+  <div class="logo">
+    <svg viewBox="0 0 26 26" fill="none">
+      <path d="M4 4h8c4 0 7 3 7 7s-3 7-7 7H4V4z" fill="#7f56d9"/>
+      <path d="M4 4h3v14H4V4z" fill="#5b21b6"/>
+    </svg>
+    <div>
+      <div class="logo-text">Document360</div>
+      <div class="logo-sub">Design System — PD</div>
+    </div>
+  </div>
+  <div class="badge"><span class="badge-dot"></span> Live on GitHub Pages</div>
+  <h1>D360 Design System</h1>
+  <p>Single source of truth for all Document360 screen designs.<br/>
+  Update a template here → every design automatically gets the update.</p>
+</div>
+
+<div class="section-title">Templates</div>
+<div class="grid">
+  <a class="card" href="templates/d360-universal-template.html">
+    <div class="card__icon">🔀</div>
+    <div class="card__title">Universal Template</div>
+    <div class="card__desc">All 4 templates in one file. Switch between Settings, Home, Documentation, AI Chatbot.</div>
+  </a>
+  <a class="card" href="templates/d360-settings-template.html">
+    <div class="card__icon">⚙️</div>
+    <div class="card__title">Settings Template</div>
+    <div class="card__desc">For all settings and configuration screens with accordion sub-nav.</div>
+  </a>
+  <a class="card" href="templates/d360-home-template.html">
+    <div class="card__icon">🏠</div>
+    <div class="card__title">Home Template</div>
+    <div class="card__desc">For dashboard and overview screens. No secondary navigation.</div>
+  </a>
+  <a class="card" href="templates/d360-documentation-template.html">
+    <div class="card__icon">📖</div>
+    <div class="card__title">Documentation Template</div>
+    <div class="card__desc">For article editor and category management with tree panel.</div>
+  </a>
+  <a class="card" href="templates/d360-ai-chatbot-template.html">
+    <div class="card__icon">✨</div>
+    <div class="card__title">AI Chatbot Template</div>
+    <div class="card__desc">For Eddy AI and chatbot screens. Full width content area.</div>
+  </a>
+</div>
+
+<div class="section-title">Tools</div>
+<div class="grid">
+  <a class="card" href="viewer.html">
+    <div class="card__icon">👁️</div>
+    <div class="card__title">Design Viewer</div>
+    <div class="card__desc">View any design with the latest template. Always up to date.</div>
+  </a>
+  <a class="card" href="templates/DESIGN.md">
+    <div class="card__icon">📋</div>
+    <div class="card__title">DESIGN.md</div>
+    <div class="card__desc">Complete DDS reference — colors, tokens, icons, typography.</div>
+  </a>
+</div>
+
 </body>
 </html>

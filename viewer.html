@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>D360 Design Viewer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: #18181b; }
+
+  /* Loading screen */
+  .loader {
+    position: fixed; inset: 0;
+    background: #18181b;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; z-index: 9999;
+    transition: opacity 0.3s;
+  }
+  .loader.hidden { opacity: 0; pointer-events: none; }
+  .loader__logo {
+    width: 48px; height: 48px;
+  }
+  .loader__spinner {
+    width: 32px; height: 32px;
+    border: 3px solid #3e3e46;
+    border-top-color: #7f56d9;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader__text {
+    color: #a1a1aa; font-size: 13px; font-weight: 500;
+  }
+
+  /* Error screen */
+  .error {
+    position: fixed; inset: 0;
+    background: #18181b;
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; z-index: 9998;
+    color: #a1a1aa; text-align: center; padding: 24px;
+  }
+  .error.visible { display: flex; }
+  .error i { font-size: 32px; color: #ef4444; }
+  .error__title { font-size: 15px; font-weight: 600; color: #f4f4f5; }
+  .error__msg { font-size: 13px; line-height: 20px; max-width: 400px; }
+  .error__btn {
+    margin-top: 8px; padding: 8px 20px;
+    background: #7f56d9; color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+
+  /* Design frame */
+  #design-frame {
+    width: 100%; height: 100%;
+    border: none; display: block;
+  }
+
+  /* Top bar overlay (design tool UI) */
+  .viewer-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 0; z-index: 8888;
+    pointer-events: none;
+  }
+
+  /* Floating info pill */
+  .design-pill {
+    position: fixed; bottom: 20px; left: 20px;
+    background: #18181b; border: 1px solid #3e3e46;
+    border-radius: 10px; padding: 8px 14px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 9000; font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    font-size: 12px;
+  }
+  .design-pill__dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #22c55e; flex-shrink: 0;
+    box-shadow: 0 0 6px #22c55e;
+  }
+  .design-pill__name {
+    color: #e4e4e7; font-weight: 600;
+    max-width: 200px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .design-pill__version {
+    color: #52525b; font-size: 11px;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div class="loader" id="loader">
+  <svg class="loader__logo" viewBox="0 0 26 26" fill="none">
+    <path d="M4 4h8c4 0 7 3 7 7s-3 7-7 7H4V4z" fill="#7f56d9"/>
+    <path d="M4 4h3v14H4V4z" fill="#5b21b6"/>
+  </svg>
+  <div class="loader__spinner"></div>
+  <div class="loader__text" id="loader-text">Loading template...</div>
+</div>
+
+<!-- Error screen -->
+<div class="error" id="error-screen">
+  <div style="font-size:32px">⚠️</div>
+  <div class="error__title">Could not load design</div>
+  <div class="error__msg" id="error-msg">Something went wrong loading the template or content.</div>
+  <button class="error__btn" onclick="location.reload()">Try again</button>
+</div>
+
+<!-- Design renders here -->
+<iframe id="design-frame" style="opacity:0; transition: opacity 0.3s;"></iframe>
+
+<!-- Design info pill -->
+<div class="design-pill" id="design-pill" style="display:none">
+  <div class="design-pill__dot"></div>
+  <div class="design-pill__name" id="pill-name">Design</div>
+  <div class="design-pill__version" id="pill-version">v1</div>
+</div>
+
+<script>
+const TEMPLATE_URL = 'https://kannaa-ux.github.io/document360-design-system-PD/templates/d360-universal-template.html';
+const GITHUB_BASE  = 'https://kannaa-ux.github.io/document360-design-system-PD';
+
+// Get params from URL
+// Usage: viewer.html?design=path/to/content.html&name=Screen+Name&version=v1
+// OR:    viewer.html?inline=BASE64_CONTENT&name=Screen+Name
+const params = new URLSearchParams(window.location.search);
+const designPath    = params.get('design');   // path to content HTML file
+const inlineContent = params.get('inline');   // base64 encoded content
+const designName    = params.get('name') || 'Design';
+const designVersion = params.get('version') || 'v1';
+
+function setLoaderText(t) {
+  document.getElementById('loader-text').textContent = t;
+}
+
+function showError(msg) {
+  document.getElementById('loader').classList.add('hidden');
+  document.getElementById('error-msg').textContent = msg;
+  document.getElementById('error-screen').classList.add('visible');
+}
+
+async function loadDesign() {
+  try {
+    // Step 1: Fetch the latest template from GitHub Pages
+    setLoaderText('Fetching latest template...');
+    const tplRes = await fetch(TEMPLATE_URL + '?t=' + Date.now(), { cache: 'no-cache' });
+    if (!tplRes.ok) throw new Error('Template not found at ' + TEMPLATE_URL);
+    let templateHTML = await tplRes.text();
+
+    // Step 2: Get content HTML
+    let contentHTML = '';
+    if (inlineContent) {
+      setLoaderText('Loading design content...');
+      contentHTML = atob(inlineContent);
+    } else if (designPath) {
+      setLoaderText('Loading design content...');
+      const contentRes = await fetch(designPath + '?t=' + Date.now(), { cache: 'no-cache' });
+      if (!contentRes.ok) throw new Error('Design content not found: ' + designPath);
+      contentHTML = await contentRes.text();
+    }
+    // If no content provided — just show empty template
+
+    // Step 3: Inject content into template
+    if (contentHTML) {
+      // Replace content area placeholder
+      const contentAreaRegex = /<main[^>]*id="content"[^>]*>[\s\S]*?<\/main>/;
+      if (contentAreaRegex.test(templateHTML)) {
+        templateHTML = templateHTML.replace(
+          contentAreaRegex,
+          `<main class="content" id="content">${contentHTML}</main>`
+        );
+      }
+    }
+
+    // Step 4: Render in iframe
+    setLoaderText('Rendering design...');
+    const frame = document.getElementById('design-frame');
+    const blob = new Blob([templateHTML], { type: 'text/html' });
+    const blobURL = URL.createObjectURL(blob);
+    
+    frame.onload = () => {
+      // Hide loader, show frame
+      document.getElementById('loader').classList.add('hidden');
+      frame.style.opacity = '1';
+      
+      // Show design pill
+      const pill = document.getElementById('design-pill');
+      document.getElementById('pill-name').textContent = designName;
+      document.getElementById('pill-version').textContent = designVersion;
+      pill.style.display = 'flex';
+    };
+    
+    frame.src = blobURL;
+
+  } catch(err) {
+    showError(err.message);
+  }
+}
+
+loadDesign();
+</script>
+</body>
+</html>
