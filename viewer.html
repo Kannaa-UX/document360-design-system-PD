@@ -6,7 +6,7 @@
 <title>D360 Design Viewer</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: #18181b; }
+  html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: 'Inter', sans-serif; background: #18181b; }
 
   /* Loading screen */
   .loader {
@@ -17,7 +17,7 @@
     gap: 16px; z-index: 9999;
     transition: opacity 0.3s;
   }
-  .loader.hidden { opacity: 0; pointer-events: none; }
+  .loader.hidden { opacity: 0; pointer-events: none; visibility: hidden; }
   .loader__logo {
     width: 48px; height: 48px;
   }
@@ -147,7 +147,7 @@ async function loadDesign() {
   try {
     // Step 1: Fetch the latest template from GitHub Pages
     setLoaderText('Fetching latest template...');
-    const tplRes = await fetch(TEMPLATE_URL + '?t=' + Date.now(), { cache: 'no-cache' });
+    const tplRes = await fetch(TEMPLATE_URL + '?v=' + Date.now(), { cache: 'no-store', headers: {'Cache-Control': 'no-cache'} });
     if (!tplRes.ok) throw new Error('Template not found at ' + TEMPLATE_URL);
     let templateHTML = await tplRes.text();
 
