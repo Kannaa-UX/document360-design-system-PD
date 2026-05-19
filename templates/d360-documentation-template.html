@@ -421,7 +421,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    LAYOUT SHELL
 ═══════════════════════════════════════════════ */
 .shell { display: flex; flex-direction: column; position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; margin: 0; padding: 0; width: 100%; }
-.shell__body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+.shell__body { display: flex; position: absolute; top: var(--topbar-h); left: 0; right: 0; bottom: 0; overflow: hidden; }
 
 /* ═══════════════════════════════════════════════
    TOPBAR — FIX: overflow:hidden on topbar,
