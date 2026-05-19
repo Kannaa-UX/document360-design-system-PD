@@ -6,7 +6,7 @@
 <title>D360 Design Viewer</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: 'Inter', sans-serif; background: #18181b; }
+  html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: 'Inter', sans-serif; background: #f4f4f5; }
 
   /* Loading screen */
   .loader {
@@ -55,7 +55,7 @@
   }
 
   /* Design frame */
-  #design-frame { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; border: none; display: block; }
+  #design-frame { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: 0; display: block; margin: 0; padding: 0; }
 
   /* Top bar overlay (design tool UI) */
   .viewer-bar {
@@ -121,7 +121,7 @@
 </div>
 
 <script>
-const TEMPLATE_URL = 'https://kannaa-ux.github.io/document360-design-system-PD/templates/d360-universal-template.html';
+const TEMPLATE_URL = 'https://kannaa-ux.github.io/document360-design-system-PD/d360-universal-template.html';
 const GITHUB_BASE  = 'https://kannaa-ux.github.io/document360-design-system-PD';
 
 // Get params from URL

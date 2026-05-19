@@ -403,14 +403,14 @@
    RESET
 ═══════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; min-height: 100vh; overflow: hidden; margin: 0; padding: 0; }
+html, body { height: 100%; min-height: 100vh; overflow: hidden; margin: 0; padding: 0; background: #ffffff; }
 body { font-family: var(--font); font-size: 13px; color: var(--text-base); background: var(--surface-neutral-100); }
 button { font-family: inherit; cursor: pointer; border: none; background: none; padding: 0; }
 
 /* ═══════════════════════════════════════════════
    LAYOUT SHELL
 ═══════════════════════════════════════════════ */
-.shell { display: flex; flex-direction: column; position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; margin: 0; padding: 0; width: 100%; }
+.shell { display: flex; flex-direction: column; position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; margin: 0; padding: 0; width: 100%; background: #f4f4f5; }
 .shell__body { display: flex; position: absolute; top: var(--topbar-h); left: 0; right: 0; bottom: 0; overflow: hidden; }
 
 /* ═══════════════════════════════════════════════
